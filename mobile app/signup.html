@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Mobile</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 20px;
+    }
+
+    .signup-container {
+      background: rgba(255, 255, 255, 0.95);
+      color: #334155;
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(20px);
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #1e293b;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 16px 20px;
+      margin: 15px 0;
+      display: block;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background: #ffffff;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      color: #334155;
+    }
+
+    .signup-container input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: #ffffff;
+    }
+
+    .signup-container button {
+      width: 100%;
+      padding: 16px 20px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      margin: 20px 0;
+      display: block;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+    }
+
+    .signup-container button:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .signup-container .login-link {
+      text-align: center;
+      display: block;
+      margin-top: 20px;
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .signup-container .login-link:hover {
+      color: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .app-logo {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .app-title {
+      color: #64748b;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Mobile-specific optimizations */
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .signup-container {
+        padding: 25px 20px;
+        border-radius: 16px;
+      }
+      
+      .signup-container h2 {
+        font-size: 1.6rem;
+      }
+      
+      .signup-container input,
+      .signup-container button {
+        padding: 14px 18px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .signup-container {
+      animation: fadeInUp 0.8s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <div class="app-header">
+      <div class="app-logo">🏛️</div>
+      <div class="app-title">Civic Connect</div>
+    </div>
+    
+    <h2>Signup</h2>
+    <form action="community-feed.html">
+      <input type="text" placeholder="Full Name" required>
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+    <a href="login.html" class="login-link">Already have an account? Login</a>
+  </div>
+</body>
+</html>
