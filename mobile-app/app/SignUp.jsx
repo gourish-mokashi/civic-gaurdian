@@ -1,9 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
 import React, { useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import GoogleIcon from '../components/GoogleIcon'
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('')
@@ -97,76 +95,51 @@ const SignUp = () => {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#4285F4" />
       <View className="flex-1 bg-white">
+        
+        <ImageBackground 
+          source={require('../assets/app-images/signin-head.png')}
+          style={{ 
+            backgroundColor: '#4285F4',
+            width: width,
+            height: isTablet ? 350 : 280
+          }}
+          resizeMode="cover"
+        >
+          <View className={`flex-1 ${isTablet ? 'px-8 pt-16 pb-12' : 'px-6 pt-12 pb-8'}`}>
+            <View className={isTablet ? "h-8" : "h-6"} />
+            
+            <TouchableOpacity 
+              className={`absolute ${isTablet ? 'top-16 left-8' : 'top-12 left-6'} z-10`}
+              onPress={() => router.back()}
+            >
+              <Ionicons name="arrow-back" size={isTablet ? 28 : 24} color="white" />
+            </TouchableOpacity>
+
+            <View className={`items-center ${isTablet ? 'mb-10' : 'mb-8'}`}>
+              <View className={`bg-white bg-opacity-20 rounded-full ${isTablet ? 'p-4' : 'p-3'}`}>
+                <Ionicons name="shield-outline" size={isTablet ? 40 : 32} color="white" />
+              </View>
+            </View>
+
+            <View className={`items-center ${isTablet ? 'mb-8' : 'mb-6'}`}>
+              <Text className={`text-white font-bold text-center ${isTablet ? 'text-4xl' : 'text-3xl'}`}>
+                Sign Up
+              </Text>
+              <Text className={`text-white mt-3 opacity-90 ${isTablet ? 'text-lg' : 'text-base'}`}>
+                Already have an account? <Text className="font-semibold underline" onPress={goToSignIn}>Log In</Text>
+              </Text>
+            </View>
+          </View>
+        </ImageBackground>
+
         <View className={`flex-1 ${isTablet ? 'items-center' : ''}`}>
           <View className={`flex-1 w-full ${isTablet ? 'max-w-md' : ''}`}>
-            
-            <ImageBackground 
-              source={require('../assets/app-images/signin-head.png')}
-              className={`w-full ${isTablet ? 'px-8 pt-16 pb-12' : 'px-6 pt-12 pb-8'}`}
-              style={{ 
-                backgroundColor: '#4285F4',
-                width: '100%',
-                minHeight: isTablet ? 300 : 250
-              }}
-              resizeMode="cover"
-            >
-              <View className={isTablet ? "h-8" : "h-6"} />
-              
-              <TouchableOpacity 
-                className={`absolute ${isTablet ? 'top-16 left-8' : 'top-12 left-6'} z-10`}
-                onPress={() => router.back()}
-              >
-                <Ionicons name="arrow-back" size={isTablet ? 28 : 24} color="white" />
-              </TouchableOpacity>
-
-              <View className={`items-center ${isTablet ? 'mb-10' : 'mb-8'}`}>
-                <View className={`bg-white bg-opacity-20 rounded-full ${isTablet ? 'p-4' : 'p-3'}`}>
-                  <Ionicons name="shield-outline" size={isTablet ? 40 : 32} color="white" />
-                </View>
-              </View>
-
-              <View className={`items-center ${isTablet ? 'mb-8' : 'mb-6'}`}>
-                <Text className={`text-white font-bold text-center ${isTablet ? 'text-4xl' : 'text-3xl'}`}>
-                  Sign Up
-                </Text>
-                <Text className={`text-white mt-3 opacity-90 ${isTablet ? 'text-lg' : 'text-base'}`}>
-                  Already have an account? <Text className="font-semibold underline" onPress={goToSignIn}>Log In</Text>
-                </Text>
-              </View>
-            </ImageBackground>
-
             <ScrollView 
               className={`flex-1 bg-white ${isTablet ? 'px-8 -mt-6' : 'px-6 -mt-4'}`} 
               style={{ borderTopLeftRadius: isTablet ? 32 : 24, borderTopRightRadius: isTablet ? 32 : 24 }}
               showsVerticalScrollIndicator={false}
             >
               <View className={isTablet ? "pt-10" : "pt-8"}>
-                
-                <TouchableOpacity 
-                  className={`bg-white border border-gray-200 rounded-xl flex-row items-center justify-center mb-6 ${isTablet ? 'py-5 px-8' : 'py-4 px-6'}`}
-                  style={{ 
-                    shadowColor: '#000', 
-                    shadowOffset: { width: 0, height: 2 }, 
-                    shadowOpacity: 0.1, 
-                    shadowRadius: 4, 
-                    elevation: 3 
-                  }}
-                >
-                  <View className="mr-3">
-                    <GoogleIcon size={isTablet ? 24 : 20} />
-                  </View>
-                  <Text className={`text-gray-700 font-medium ${isTablet ? 'text-lg' : 'text-base'}`}>
-                    Sign up with Google
-                  </Text>
-                </TouchableOpacity>
-
-                <View className={`flex-row items-center ${isTablet ? 'mb-8' : 'mb-6'}`}>
-                  <View className="flex-1 h-px bg-gray-200" />
-                  <Text className={`mx-4 text-gray-500 ${isTablet ? 'text-base' : 'text-sm'}`}>
-                    Or create account with
-                  </Text>
-                  <View className="flex-1 h-px bg-gray-200" />
-                </View>
 
                 <View className={`flex-row ${isTablet ? 'mb-6' : 'mb-4'} ${isTablet ? 'space-x-4' : 'space-x-3'}`}>
                   <View className="flex-1">
