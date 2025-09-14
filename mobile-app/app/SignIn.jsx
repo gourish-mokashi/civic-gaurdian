@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensi
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import GoogleIcon from '../components/GoogleIcon'
 
 const SignIn = () => {
@@ -12,6 +13,10 @@ const SignIn = () => {
   
   const { width } = Dimensions.get('window')
   const isTablet = width >= 768
+
+  const goToSignUp = () => {
+    router.push('/SignUp')
+  }
 
   return (
     <>
@@ -158,8 +163,8 @@ const SignIn = () => {
                   <Text className={`text-gray-600 ${isTablet ? 'text-base' : 'text-sm'}`}>
                     Don't have an account?{' '}
                   </Text>
-                  <TouchableOpacity>
-                    <Text className={`text-blue-500 font-medium ${isTablet ? 'text-base' : 'text-sm'}`}>
+                  <TouchableOpacity onPress={goToSignUp}>
+                    <Text className={`text-blue-500 underline font-medium ${isTablet ? 'text-base' : 'text-sm'}`}>
                       Sign Up
                     </Text>
                   </TouchableOpacity>
