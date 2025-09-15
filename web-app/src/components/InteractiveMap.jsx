@@ -3,7 +3,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 // Default center over Sankeshwar (can be overridden via props)
-const DEFAULT_CENTER = [16.26, 74.45]
+const DEFAULT_CENTER = [13.1167, 77.6347]
 
 // Fix default icon paths issue in Leaflet when bundling
 // We provide a custom icon anyway, but this avoids broken images
