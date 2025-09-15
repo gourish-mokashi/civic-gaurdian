@@ -3,9 +3,9 @@ import React from 'react'
 
 const Profile = () => {
   return (
-    <View>
-      <Text>Profile</Text>
-    </View>
+    <SafeAreaView className = "flex-1 justify-center items-center">
+      <Text className = "text-4xl">Profile</Text>
+    </SafeAreaView>
   )
 }
 

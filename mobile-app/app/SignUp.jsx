@@ -1,11 +1,11 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
+import { router } from 'expo-router' 
+import { authClient } from './lib/auth-client' 
 
 const SignUp = () => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -19,6 +19,22 @@ const SignUp = () => {
   
   const { width } = Dimensions.get('window')
   const isTablet = width >= 768
+
+
+
+  const handleLogin = async () => {
+        await authClient.signUp({
+                email,
+                password,
+                fullName,
+                phoneNumber: phone,
+                address,
+                pincode,
+                // city,
+                // state
+                
+        })
+    };
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -34,13 +50,8 @@ const SignUp = () => {
   }
 
   const handleSignUp = () => {
-    if (!firstName.trim()) {
-      alert('Please enter your first name')
-      return
-    }
-    
-    if (!lastName.trim()) {
-      alert('Please enter your last name')
+    if (!fullName.trim()) {
+      alert('Please enter your full name')
       return
     }
     
@@ -145,20 +156,10 @@ const SignUp = () => {
                   <View className="flex-1">
                     <TextInput
                       className={`bg-gray-50 border border-gray-200 rounded-xl px-4 ${isTablet ? 'py-5 text-lg' : 'py-4 text-base'}`}
-                      placeholder="First Name"
+                      placeholder="Full Name"
                       placeholderTextColor="#9CA3AF"
-                      value={firstName}
-                      onChangeText={setFirstName}
-                      autoCapitalize="words"
-                    />
-                  </View>
-                  <View className="flex-1">
-                    <TextInput
-                      className={`bg-gray-50 border border-gray-200 rounded-xl px-4 ${isTablet ? 'py-5 text-lg' : 'py-4 text-base'}`}
-                      placeholder="Last Name"
-                      placeholderTextColor="#9CA3AF"
-                      value={lastName}
-                      onChangeText={setLastName}
+                      value={fullName}
+                      onChangeText={setFullName}
                       autoCapitalize="words"
                     />
                   </View>
@@ -292,7 +293,7 @@ const SignUp = () => {
                 <TouchableOpacity 
                   className={`bg-blue-500 rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
                   style={{ backgroundColor: '#4285F4' }}
-                  onPress={handleSignUp}
+                  onPress={handleLogin}
                 >
                   <Text className={`text-white text-center font-semibold ${isTablet ? 'text-lg' : 'text-base'}`}>
                     Sign Up
