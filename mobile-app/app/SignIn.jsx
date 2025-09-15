@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { useState } from 'react'
-import { Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
-
+import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -17,10 +16,28 @@ const SignIn = () => {
     router.push('/SignUp')
   }
 
-  const handleSignIn = () => {
-    // Add your authentication logic here
-    // For now, navigate to the main app (tabs)
-    router.replace('/(root)/(tabs)')
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const handleSignIn = async () => {
+    // Basic validation - just check if fields are not empty
+    if (!email.trim()) {
+      Alert.alert('Error', 'Please enter your email')
+      return
+    }
+    
+    if (!password.trim()) {
+      Alert.alert('Error', 'Please enter your password')
+      return
+    }
+
+    console.log('Sign in with:', { email, password })
+    
+    // Navigate to Home tab specifically
+    console.log('Navigating to Home tab...')
+    router.replace('/(root)/(tabs)/Home')
   }
 
   return (
