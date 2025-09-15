@@ -1,7 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
+import { useState } from 'react'
+import { Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 
 const SignIn = () => {
@@ -15,6 +15,12 @@ const SignIn = () => {
 
   const goToSignUp = () => {
     router.push('/SignUp')
+  }
+
+  const handleSignIn = () => {
+    // Add your authentication logic here
+    // For now, navigate to the main app (tabs)
+    router.replace('/(root)/(tabs)')
   }
 
   return (
@@ -125,8 +131,9 @@ const SignIn = () => {
                 </View>
 
                 <TouchableOpacity 
-                  className={`bg-blue-500 rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
+                  className={`rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
                   style={{ backgroundColor: '#4285F4' }}
+                  onPress={handleSignIn}
                 >
                   <Text className={`text-white text-center font-semibold ${isTablet ? 'text-lg' : 'text-base'}`}>
                     Log In
