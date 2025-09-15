@@ -4,7 +4,7 @@ import Badge from '../components/Badge'
 import IssueDetailModal from '../components/IssueDetailModal'
 
 export default function IssueManagement() {
-  const [issues, _setIssues] = useState(mockIssues)
+  const [issues, setIssues] = useState(mockIssues)
   const [filters, setFilters] = useState({ status: 'All', category: 'All' })
   const [selectedIssue, setSelectedIssue] = useState(null)
 
@@ -18,6 +18,16 @@ export default function IssueManagement() {
   })
 
   // badge styling moved to reusable Badge component
+
+  // Save changes to issue (status/department)
+  const handleSaveIssue = (updatedIssue) => {
+    setIssues((prevIssues) =>
+      prevIssues.map((issue) =>
+        issue.id === updatedIssue.id ? { ...issue, ...updatedIssue } : issue
+      )
+    );
+    setSelectedIssue(null);
+  };
 
   return (
     <div className="space-y-4">
@@ -99,7 +109,11 @@ export default function IssueManagement() {
       </div>
 
       {/* Issue details modal */}
-      <IssueDetailModal issue={selectedIssue} onClose={() => setSelectedIssue(null)} />
+      <IssueDetailModal
+        issue={selectedIssue}
+        onClose={() => setSelectedIssue(null)}
+        onSave={handleSaveIssue}
+      />
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Badge from './Badge'
 import { FiX, FiImage } from 'react-icons/fi'
 
-export default function IssueDetailModal({ issue, onClose }) {
+export default function IssueDetailModal({ issue, onClose, onSave }) {
 	const [status, setStatus] = useState(issue?.status || 'New')
 	const [department, setDepartment] = useState(issue?.department || '')
 
@@ -11,9 +11,11 @@ export default function IssueDetailModal({ issue, onClose }) {
 		setDepartment(issue?.department || '')
 	}, [issue])
 
-	const handleSave = () => {
-		console.log('Saving changes for', issue.id, { status, department })
-	}
+		const handleSave = () => {
+			if (onSave && issue) {
+				onSave({ ...issue, status, department });
+			}
+		};
 
 	if (!issue) return null
 
@@ -32,9 +34,9 @@ export default function IssueDetailModal({ issue, onClose }) {
 			<div
 				role="dialog"
 				aria-modal="true"
-				className="relative z-10 w-full max-w-2xl overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl"
+				className="relative z-10 w-full max-w-2xl overflow-hidden bg-white border border-gray-200 rounded-lg shadow-xl"
 			>
-				<div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
+				<div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
 					<h3 className="text-base font-semibold text-gray-900">Case {issue.id}</h3>
 					<button
 						type="button"
@@ -42,18 +44,18 @@ export default function IssueDetailModal({ issue, onClose }) {
 						className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
 						aria-label="Close"
 					>
-						<FiX className="h-5 w-5" />
+						<FiX className="w-5 h-5" />
 					</button>
 				</div>
 
 				<div className="p-4 space-y-4">
 					{/* Image */}
-					<div className="aspect-video w-full overflow-hidden rounded-md bg-gray-100 flex items-center justify-center">
+					<div className="flex items-center justify-center w-full overflow-hidden bg-gray-100 rounded-md aspect-video">
 						{imgSrc ? (
-							<img src={imgSrc} alt={`Issue ${issue.id}`} className="h-full w-full object-cover" />
+							<img src={imgSrc} alt={`Issue ${issue.id}`} className="object-cover w-full h-full" />
 						) : (
 							<div className="flex flex-col items-center text-gray-400">
-								<FiImage className="h-10 w-10" />
+								<FiImage className="w-10 h-10" />
 								<span className="mt-2 text-xs">No image available</span>
 							</div>
 						)}
@@ -104,7 +106,7 @@ export default function IssueDetailModal({ issue, onClose }) {
 											<select
 												value={status}
 												onChange={(e) => setStatus(e.target.value)}
-												className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+												className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 											>
 												{['New', 'In Progress', 'Resolved', 'Rejected', 'On Hold'].map((opt) => (
 													<option key={opt} value={opt}>{opt}</option>
@@ -117,7 +119,7 @@ export default function IssueDetailModal({ issue, onClose }) {
 											<select
 												value={department}
 												onChange={(e) => setDepartment(e.target.value)}
-												className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+												className="block w-full px-3 py-2 mt-1 text-sm text-gray-900 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
 											>
 												<option value="">Unassigned</option>
 												{['Public Works', 'Sanitation', 'Electricity'].map((dept) => (
@@ -131,7 +133,7 @@ export default function IssueDetailModal({ issue, onClose }) {
 										<button
 											type="button"
 											onClick={handleSave}
-											className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+											className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700"
 										>
 											Save Changes
 										</button>
