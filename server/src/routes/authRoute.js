@@ -6,4 +6,9 @@ const authRouter = Router();
 
 authRouter.all("/api/auth/{*any}", toNodeHandler(auth));
 
+// authRouter.get('/api/auth/{*any}', (req, res) => {
+//     res.send('Hello World!');
+// });
+
+
 export default authRouter;

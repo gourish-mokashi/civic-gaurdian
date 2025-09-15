@@ -1,12 +1,14 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "../../generated/prisma/index.js";
+import { expo } from "@better-auth/expo";
 
 const prisma = new PrismaClient();
 export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
+    plugins: [expo()],
     emailAndPassword: {
         enabled: true,
     },
@@ -18,5 +20,7 @@ export const auth = betterAuth({
 
         },
     },
-    trustedOrigins: ["http://localhost:5173", "civic-guardian://"],
+    trustedOrigins: ["http://localhost:8081", "civic-guardian://"],
+    secret: process.env.AUTH_SECRET,
+    baseURL: process.env.AUTH_BASE_URL,
 });
