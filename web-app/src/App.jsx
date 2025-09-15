@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard'
 import IssueManagement from './pages/IssueManagement'
 import PredictiveAlerts from './pages/PredictiveAlerts'
 import Analytics from './pages/Analytics'
+import SignIn from './pages/SignIn'
 
 function App() {
   return (
@@ -15,6 +16,12 @@ function App() {
           <MainLayout>
             <Dashboard />
           </MainLayout>
+        }
+      />
+      <Route
+        path="/signin"
+        element={
+            <SignIn />
         }
       />
       <Route

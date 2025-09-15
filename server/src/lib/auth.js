@@ -19,7 +19,7 @@ export const auth = betterAuth({
             pincode: { type: "string", required: false },
         },
     },
-    trustedOrigins: ["http://localhost:8081", "civic-guardian://"],
+    trustedOrigins: ["http://localhost:8081", "civic-guardian://", "http://localhost:5173"],
     secret: process.env.AUTH_SECRET,
     baseURL: process.env.AUTH_BASE_URL,
 });
