@@ -1,7 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
+import { router } from 'expo-router'  
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('')
