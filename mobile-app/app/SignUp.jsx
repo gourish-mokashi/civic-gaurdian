@@ -1,8 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router' 
-import { authClient } from './lib/auth-client' 
+import authClient from './lib/auth-client' 
 
 const SignUp = () => {
   const [fullName, setFullName] = useState('')
@@ -23,17 +23,26 @@ const SignUp = () => {
 
 
   const handleLogin = async () => {
-        await authClient.signUp({
-                email,
-                password,
-                fullName,
-                phoneNumber: phone,
-                address,
-                pincode,
-                // city,
-                // state
-                
-        })
+        console.log('Attempting to sign up user with email:', email)
+        await authClient.signUp.email({
+          email,
+          password,
+          name: fullName,
+          phoneNumber: phone,
+          address,
+          pincode,
+        },
+        {
+          onSuccess: (user) => {
+            Alert.alert('Success', 'Account created successfully! Please verify your email before logging in.')
+            router.push('/SignIn')
+          },
+          onError: (error) => {
+            Alert.alert('Error', error.message || 'An error occurred during sign up. Please try again.')
+            console.error('Sign up error:', error)
+        }
+      }
+      )
     };
 
   const validateEmail = (email) => {
