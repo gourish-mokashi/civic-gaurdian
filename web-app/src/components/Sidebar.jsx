@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom'
 import { FiHome, FiAlertTriangle, FiBell, FiBarChart2 } from 'react-icons/fi'
 
 const navItems = [
-  { label: 'Dashboard', to: '/', icon: <FiHome className="h-5 w-5" aria-hidden="true" /> },
-  { label: 'Issue Management', to: '/issues', icon: <FiAlertTriangle className="h-5 w-5" aria-hidden="true" /> },
-  { label: 'Predictive Alerts', to: '/alerts', icon: <FiBell className="h-5 w-5" aria-hidden="true" /> },
-  { label: 'Analytics', to: '/analytics', icon: <FiBarChart2 className="h-5 w-5" aria-hidden="true" /> },
+  { label: 'Dashboard', to: '/', icon: <FiHome className="w-5 h-5" aria-hidden="true" /> },
+  { label: 'Issue Management', to: '/issues', icon: <FiAlertTriangle className="w-5 h-5" aria-hidden="true" /> },
+  { label: 'Predictive Alerts', to: '/alerts', icon: <FiBell className="w-5 h-5" aria-hidden="true" /> },
+  { label: 'Analytics', to: '/analytics', icon: <FiBarChart2 className="w-5 h-5" aria-hidden="true" /> },
 ]
 
 export default function Sidebar() {
@@ -16,10 +16,10 @@ export default function Sidebar() {
     `${baseLink} ${isActive ? 'bg-blue-600 text-white' : 'text-white/80 hover:bg-blue-600 hover:text-white'}`
 
   return (
-    <div className="h-full flex flex-col bg-blue-500 text-white">
+    <div className="flex flex-col h-full text-white bg-blue-500">
       {/* Brand */}
-      <div className="px-4 py-4 border-b border-white/20 flex items-center gap-3">
-        <div className="h-8 w-8 rounded bg-blue-600 flex items-center justify-center text-xs font-medium">
+      <div className="flex items-center gap-3 px-4 py-4 border-b border-white/20">
+        <div className="flex items-center justify-center w-8 h-8 text-xs font-medium bg-blue-600 rounded">
           {/* Logo placeholder */}
           JP
         </div>
@@ -27,7 +27,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-2 space-y-1" aria-label="Main">
+      <nav className="flex-1 p-2 space-y-1 overflow-y-auto" aria-label="Main">
         {navItems.map(({ label, to, icon }) => (
           <NavLink key={to} to={to} className={linkClass} end>
             {icon}
