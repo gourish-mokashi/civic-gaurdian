@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "../../generated/prisma";
+import { PrismaClient } from "../../generated/prisma/index.js";
 
 const prisma = new PrismaClient();
 export const auth = betterAuth({
@@ -10,4 +10,13 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
+    user: {
+        additionalFields:{
+            phoneNumber: { type: "string", required: false },
+            address: { type: "string", required: false },
+            pincode: { type: "string", required: false },
+
+        },
+    },
+    trustedOrigins: ["http://localhost:5173", "civic-guardian://"],
 });
