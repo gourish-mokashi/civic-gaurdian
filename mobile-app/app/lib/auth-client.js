@@ -1,9 +1,9 @@
-import { createAuthClient } from "better-auth/react";
 import { expoClient } from "@better-auth/expo/client";
+import { createAuthClient } from "better-auth/react";
 import * as SecureStore from "expo-secure-store";
 
 const authClient = createAuthClient({
-    baseURL: "http://192.168.35.243:3000", // Base URL of your Better Auth backend.
+    baseURL: `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000`,
     plugins: [
         expoClient({
             scheme: "civic-guardian",
