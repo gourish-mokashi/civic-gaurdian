@@ -10,5 +10,13 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
+    user: {
+        additionalFields:{
+            phoneNumber: { type: "string", required: false },
+            address: { type: "string", required: false },
+            pincode: { type: "string", required: false },
+
+        },
+    },
     trustedOrigins: ["http://localhost:5173", "civic-guardian://"],
 });
