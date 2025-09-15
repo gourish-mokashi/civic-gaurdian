@@ -1,8 +1,7 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground } from 'react-native'
-import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-
+import { useState } from 'react'
+import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -15,6 +14,30 @@ const SignIn = () => {
 
   const goToSignUp = () => {
     router.push('/SignUp')
+  }
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const handleSignIn = async () => {
+    // Basic validation - just check if fields are not empty
+    if (!email.trim()) {
+      Alert.alert('Error', 'Please enter your email')
+      return
+    }
+    
+    if (!password.trim()) {
+      Alert.alert('Error', 'Please enter your password')
+      return
+    }
+
+    console.log('Sign in with:', { email, password })
+    
+    // Navigate to Home tab specifically
+    console.log('Navigating to Home tab...')
+    router.replace('/(root)/(tabs)/Home')
   }
 
   return (
@@ -125,8 +148,9 @@ const SignIn = () => {
                 </View>
 
                 <TouchableOpacity 
-                  className={`bg-blue-500 rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
+                  className={`rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
                   style={{ backgroundColor: '#4285F4' }}
+                  onPress={handleSignIn}
                 >
                   <Text className={`text-white text-center font-semibold ${isTablet ? 'text-lg' : 'text-base'}`}>
                     Log In

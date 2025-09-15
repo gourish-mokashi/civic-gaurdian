@@ -1,8 +1,8 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, ImageBackground, Alert } from 'react-native'
-import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router' 
-import authClient from './lib/auth-client' 
+import { router } from 'expo-router'
+import { useState } from 'react'
+import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import authClient from './lib/auth-client'
 
 const SignUp = () => {
   const [fullName, setFullName] = useState('')
@@ -20,31 +20,6 @@ const SignUp = () => {
   const { width } = Dimensions.get('window')
   const isTablet = width >= 768
 
-
-
-  const handleLogin = async () => {
-        console.log('Attempting to sign up user with email:', email)
-        await authClient.signUp.email({
-          email,
-          password,
-          name: fullName,
-          phoneNumber: phone,
-          address,
-          pincode,
-        },
-        {
-          onSuccess: (user) => {
-            Alert.alert('Success', 'Account created successfully! Please verify your email before logging in.')
-            router.push('/SignIn')
-          },
-          onError: (error) => {
-            Alert.alert('Error', error.message || 'An error occurred during sign up. Please try again.')
-            console.error('Sign up error:', error)
-        }
-      }
-      )
-    };
-
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email)
@@ -58,53 +33,81 @@ const SignUp = () => {
     return pincode.length === 6 && /^\d+$/.test(pincode)
   }
 
-  const handleSignUp = () => {
+  const handleLogin = async () => {
+    // Validation logic
     if (!fullName.trim()) {
-      alert('Please enter your full name')
+      Alert.alert('Error', 'Please enter your full name')
       return
     }
     
     if (!validateEmail(email)) {
-      alert('Please enter a valid email address')
+      Alert.alert('Error', 'Please enter a valid email address')
       return
     }
     
     if (!validatePhone(phone)) {
-      alert('Please enter a valid 10-digit phone number')
+      Alert.alert('Error', 'Please enter a valid 10-digit phone number')
       return
     }
     
     if (!address.trim()) {
-      alert('Please enter your address')
+      Alert.alert('Error', 'Please enter your address')
       return
     }
     
     if (!city.trim()) {
-      alert('Please enter your city')
+      Alert.alert('Error', 'Please enter your city')
       return
     }
     
     if (!state.trim()) {
-      alert('Please enter your state')
+      Alert.alert('Error', 'Please enter your state')
       return
     }
     
     if (!validatePincode(pincode)) {
-      alert('Please enter a valid 6-digit PIN code')
+      Alert.alert('Error', 'Please enter a valid 6-digit PIN code')
       return
     }
     
     if (password.length < 6) {
-      alert('Password must be at least 6 characters long')
+      Alert.alert('Error', 'Password must be at least 6 characters long')
       return
     }
     
     if (password !== confirmPassword) {
-      alert('Passwords do not match')
+      Alert.alert('Error', 'Passwords do not match')
       return
     }
-    
+
+    // If validation passes, attempt sign up
     console.log('Sign up validation passed')
+    console.log('Attempting to sign up user with email:', email)
+    
+    try {
+      await authClient.signUp.email({
+        email,
+        password,
+        name: fullName,
+        phoneNumber: phone,
+        address,
+        city,
+        state,
+        pincode,
+      }, {
+        onSuccess: (user) => {
+          Alert.alert('Success', 'Account created successfully! Please verify your email before logging in.')
+          router.push('/SignIn')
+        },
+        onError: (error) => {
+          Alert.alert('Error', error.message || 'An error occurred during sign up. Please try again.')
+          console.error('Sign up error:', error)
+        }
+      })
+    } catch (error) {
+      Alert.alert('Error', 'Network error. Please check your connection and try again.')
+      console.error('Network error:', error)
+    }
   }
 
   const goToSignIn = () => {
@@ -300,7 +303,7 @@ const SignUp = () => {
                 </View>
 
                 <TouchableOpacity 
-                  className={`bg-blue-500 rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
+                  className={`rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
                   style={{ backgroundColor: '#4285F4' }}
                   onPress={handleLogin}
                 >
