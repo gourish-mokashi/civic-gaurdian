@@ -1,8 +1,23 @@
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { useLocation } from 'react-router-dom'
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useSession } from "../lib/auth-client";
 
 export default function MainLayout({ children }) {
+    const { data: session, isPending, } = useSession();
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      if (!isPending && !session) {
+        toast.error("You must be logged in to access the dashboard.");
+        navigate("/signin");
+      }
+      console.log(session);
+    }, [isPending, session, navigate]);
+
   const { pathname } = useLocation()
   const title = (() => {
     if (pathname === '/' || pathname === '') return 'Dashboard'
@@ -17,6 +32,9 @@ export default function MainLayout({ children }) {
       .join(' ')
   })()
 
+  if(isPending || !session) {
+    return (null);
+  }
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Fixed Sidebar */}

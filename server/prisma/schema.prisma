@@ -17,6 +17,11 @@ enum status {
   ON_HOLD
 }
 
+enum role {
+  USER
+  ADMIN
+}
+
 model User {
   email         String    @unique
   phoneNumber   String?   @unique
@@ -26,6 +31,7 @@ model User {
   pincode       String?
   emailVerified Boolean   @default(false)
   image         String?
+  role          role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
