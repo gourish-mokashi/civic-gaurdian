@@ -21,7 +21,7 @@ app.all("/api/auth/{*any}", toNodeHandler(auth))
 
 app.use(express.json());
 
-app.use(issueRouter);
+app.use("/api/issues", issueRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

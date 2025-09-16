@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { updateIssue, createIssue, getAllIssues, getIssueById, issueStats } from "../controllers/issueController";
+import { updateIssue, createIssue, getAllIssues, getIssueById, issueStats } from "../controllers/issueController.js";
 const issueRouter = Router();
 
-issueRouter.get('/api/issues/'), getAllIssues;
-issueRouter.get('/api/issues/:id', getIssueById);
-issueRouter.post('/api/issues/', createIssue);
-issueRouter.put('/api/issues/:id', updateIssue);
-issueRouter.get('/api/issues/stats', issueStats)
+issueRouter.get('/', getAllIssues);
+issueRouter.get('/:id', getIssueById);
+issueRouter.post('/', createIssue);
+issueRouter.put('/:id', updateIssue);
+issueRouter.get('/stats', issueStats);
 
 export default issueRouter;
