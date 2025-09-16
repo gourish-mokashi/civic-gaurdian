@@ -21,14 +21,6 @@ export default function Header({ title = 'Dashboard' }) {
           />
         </div>
 
-        <button
-          type="button"
-          aria-label="Notifications"
-          className="inline-flex items-center justify-center text-gray-600 rounded-full h-9 w-9 hover:bg-gray-100 hover:text-gray-900"
-        >
-          <FiBell className="w-5 h-5" />
-        </button>
-
         <div className="relative">
           <button
             type="button"
