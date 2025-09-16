@@ -1,7 +1,14 @@
 
-import { Text, View, ScrollView, Image, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 // Mock complaints data (replace with API fetch in production)
+// To use real API data, uncomment the import above and replace complaints with:
+// const { issues: complaints, loading, error, refetch } = useIssues();
 const complaints = [
   {
     id: 'C-101',
@@ -96,8 +103,11 @@ const ComplaintCard = ({ complaint }) => {
 };
 
 const Home = () => {
+  const insets = useSafeAreaInsets();
+  
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <View className="flex-1 bg-gray-100" style={{ paddingTop: insets.top }}>
+      <StatusBar style="dark" />
       <Text className="text-3xl font-bold text-center mt-6 mb-4 text-blue-600">
         Complaints Feed
       </Text>
@@ -106,7 +116,21 @@ const Home = () => {
           <ComplaintCard key={c.id} complaint={c} />
         ))}
       </ScrollView>
-    </SafeAreaView>
+      
+      {/* Reddit-style floating action button */}
+      <TouchableOpacity 
+        className="absolute bottom-20 right-6 bg-orange-500 w-14 h-14 rounded-full shadow-lg justify-center items-center"
+        onPress={() => router.push('/InputField')}
+        style={{
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 4.65,
+          elevation: 8,
+        }}
+      >
+        <Ionicons name="add" size={28} color="white" />
+      </TouchableOpacity>
+    </View>
   );
 };
 

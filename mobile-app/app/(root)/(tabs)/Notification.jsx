@@ -1,4 +1,6 @@
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const notifications = [
   {
@@ -107,8 +109,11 @@ const NotificationItem = ({ notification }) => {
 };
 
 const Notification = () => {
+  const insets = useSafeAreaInsets();
+  
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <View className="flex-1 bg-gray-50" style={{ paddingTop: insets.top }}>
+      <StatusBar style="dark" />
       {/* Header */}
       <View className="bg-white px-6 py-4 border-b border-gray-100">
         <Text className="text-xl font-bold text-gray-900">Notifications</Text>
@@ -127,7 +132,7 @@ const Notification = () => {
           </Text>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

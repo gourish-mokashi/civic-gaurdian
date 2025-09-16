@@ -1,15 +1,22 @@
-import { Ionicons } from '@expo/vector-icons'
-import { router } from 'expo-router'
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Profile = () => {
+  const insets = useSafeAreaInsets();
+  
   const handleLogout = () => {
     console.log('Logging out...')
     router.replace('/SignIn')
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <View className="flex-1 bg-gray-100" style={{ paddingTop: insets.top }}>
+      <StatusBar style="dark" />
+
+
       {/* Header */}
       <View className="bg-white px-6 py-4 flex-row justify-between items-center border-b border-gray-100">
         <Text className="text-xl font-bold text-gray-900">Profile</Text>
@@ -51,7 +58,7 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   )
 }
 
