@@ -94,6 +94,7 @@ const SignUp = () => {
         city,
         state,
         pincode,
+        role: 'USER'
       }, {
         onSuccess: (user) => {
           Alert.alert('Success', 'Account created successfully! Please verify your email before logging in.')

@@ -17,6 +17,7 @@ export const auth = betterAuth({
             phoneNumber: { type: "string", required: false },
             address: { type: "string", required: false },
             pincode: { type: "string", required: false },
+            role: { type: "string", required: true } 
         },
     },
     trustedOrigins: ["http://localhost:8081", "civic-guardian://", "http://localhost:5173"],
