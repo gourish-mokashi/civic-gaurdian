@@ -5,7 +5,7 @@ import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextIn
 import authClient from '../lib/auth-client'; // Add this import
 import { getAuthData, saveAuthData } from '../lib/saved-token';
 
-const SignIn = () => {
+const SignIn = async () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
@@ -13,7 +13,11 @@ const SignIn = () => {
   
   const { width } = Dimensions.get('window')
   const isTablet = width >= 768
-
+  
+  const token = await getAuthData()
+  if (token) {
+      router.replace('/Home') 
+  }
   const goToSignUp = () => {
     router.push('/SignUp')
   }
