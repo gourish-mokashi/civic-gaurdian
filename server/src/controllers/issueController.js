@@ -37,6 +37,7 @@ export async function createIssue(req, res) {
     try {
         const newIssue = await prisma.issue.create({
             data: { 
+                userId: req.user.id, // Assuming req.user is populated by authentication middleware
                 title,
                 description,
                 category,
