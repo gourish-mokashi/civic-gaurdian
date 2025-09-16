@@ -46,7 +46,7 @@ const Profile = () => {
         {/* Settings Section */}
         <View className="bg-white mx-4 mt-4 mb-6 rounded-xl shadow-sm">
           <TouchableOpacity className="flex-row items-center justify-between p-4">
-            <Text className="text-red-500 font-medium">Log Out</Text>
+            <Text className="text-red-500 font-medium" onPress={handleLogout}>Log Out</Text>
             <Ionicons name="chevron-forward" size={20} color="#EF4444" />
           </TouchableOpacity>
         </View>

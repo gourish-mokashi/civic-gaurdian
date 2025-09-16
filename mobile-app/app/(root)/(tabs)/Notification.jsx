@@ -77,6 +77,7 @@ const notifications = [
 
 const NotificationItem = ({ notification }) => {
   return (
+    
     <TouchableOpacity 
       className="bg-white mx-4 mb-4 rounded-xl p-4 shadow-sm"
       activeOpacity={0.7}
@@ -107,7 +108,7 @@ const NotificationItem = ({ notification }) => {
 
 const Notification = () => {
   return (
-    <View className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-gray-50">
       {/* Header */}
       <View className="bg-white px-6 py-4 border-b border-gray-100">
         <Text className="text-xl font-bold text-gray-900">Notifications</Text>
@@ -126,7 +127,7 @@ const Notification = () => {
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
