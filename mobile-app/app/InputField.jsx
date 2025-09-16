@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import authClient, { fetchWithAuth } from '../lib/auth-client';
 
 // Civic Guardian categories - matching backend requirements
 const categories = [
@@ -64,60 +65,47 @@ const InputField = () => {
 
     };
 
-    try {
-      console.log('Submitting report:', issueData);
+try {
+  console.log("Submitting report:", issueData);
 
-      const response = await fetch(
-        `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000/api/issues`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(issueData),
-        }
-      );
+  const result = await authClient.$fetch(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000/api/issues/`, {
+    method: "POST",
+    body: issueData, // auto JSON-encoded
+  });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          `HTTP ${response.status}: ${
-            errorData.message || 'Failed to create issue'
-          }`
-        );
-      }
+  console.log("Report submitted successfully:", result);
 
-      const result = await response.json();
-      console.log('Report submitted successfully:', result);
+  Alert.alert("Success", "Your report has been submitted successfully!", [
+    {
+      text: "OK",
+      onPress: () => {
+        setTitle("");
+        setDescription("");
+        setSelectedCategory(null);
+        router.back();
+      },
+    },
+  ]);
+} catch (error) {
+  console.error("Error submitting report:", error);
 
-      Alert.alert('Success', 'Your report has been submitted successfully!', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setTitle('');
-            setDescription('');
-            setSelectedCategory(null);
-            router.back();
-          },
-        },
-      ]);
-    } catch (error) {
-      console.error('Error submitting report:', error);
+  let errorMessage = "Failed to submit report. Please try again.";
+  if (error.message.includes("401")) {
+    errorMessage = "Authentication required. Please sign in again.";
+  } else if (error.message.includes("400")) {
+    errorMessage = "Invalid report data. Please check all fields.";
+  } else if (error.message.includes("500")) {
+    errorMessage = "Server error. Please try again later.";
+  } else if (error.message.includes("Network")) {
+    errorMessage = "Network error. Please check your connection.";
+  }
 
-      let errorMessage = 'Failed to submit report. Please try again.';
-      if (error.message.includes('401')) {
-        errorMessage = 'Authentication required. Please sign in again.';
-      } else if (error.message.includes('400')) {
-        errorMessage = 'Invalid report data. Please check all fields.';
-      } else if (error.message.includes('500')) {
-        errorMessage = 'Server error. Please try again later.';
-      } else if (error.message.includes('Network')) {
-        errorMessage = 'Network error. Please check your connection.';
-      }
-
-      Alert.alert('Error', errorMessage);
-    } finally {
-      setIsSubmitting(false);
-    }
+  Alert.alert("Error", errorMessage);
+} finally {
+  setIsSubmitting(false);
+}
   };
+
 
   const handleCancel = () => {
     if (title.trim() || description.trim() || selectedCategory) {

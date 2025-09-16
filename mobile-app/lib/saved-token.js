@@ -8,3 +8,7 @@ export const getAuthData = async () => {
   const result = await SecureStore.getItemAsync('authToken');
   return result ? result : null;
 };
+
+export const clearAuthData = async () => {
+  await SecureStore.deleteItemAsync('authToken');
+};

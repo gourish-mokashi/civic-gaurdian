@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma/index.js";
+import { category, department, PrismaClient } from "../../generated/prisma/index.js";
 import rpaAutomation from "../lib/rpa_automation.js";
 
 const prisma = new PrismaClient();
@@ -29,26 +29,28 @@ export async function getIssueById(req, res) {
 }
 
 export async function createIssue(req, res) {
-    const { title, description, category, status, priority, lat, long } = req.body;
+    const { title, description, category: categoryInput, priority, lat, long } = req.body;
 
     // RPA Automation to assign department based on category
-    const assignedTo = rpaAutomation(category);
-    
+    const assignedTo = rpaAutomation(categoryInput);
+
     try {
         const newIssue = await prisma.issue.create({
             data: { 
                 userId: req.user.id, // Assuming req.user is populated by authentication middleware
                 title,
                 description,
-                category,
-                assignedTo,
+                category: category[categoryInput],
+                assignedTo: department[assignedTo],
                 priority,
                 lat,
                 long
             },
         });
+        console.log("New issue created:", newIssue);
         res.status(201).json(newIssue);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Failed to create issue" });
     }
 }

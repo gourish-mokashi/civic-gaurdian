@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import authClient from '../lib/auth-client'; // Add this import
-import { getAuthData, saveAuthData } from '../lib/saved-token';
+import authClient from '../lib/auth-client'
+import { getAuthData, saveAuthData } from '../lib/saved-token'
 
-const SignIn = async () => {
+const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
@@ -13,11 +13,18 @@ const SignIn = async () => {
   
   const { width } = Dimensions.get('window')
   const isTablet = width >= 768
-  
-  const token = await getAuthData()
-  if (token) {
-      router.replace('/Home') 
-  }
+
+  // ✅ run token check inside useEffect
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = await getAuthData()
+      if (token) {
+        router.replace('/Home')
+      }
+    }
+    checkAuth()
+  }, [])
+
   const goToSignUp = () => {
     router.push('/SignUp')
   }
@@ -33,10 +40,9 @@ const SignIn = async () => {
       return
     }
 
-    await authClient.signIn.email({
-        email,
-        password,
-      }, {
+    await authClient.signIn.email(
+      { email, password },
+      {
         onSuccess: async (data) => {
           console.log('Sign-in successful:', data)
           await saveAuthData(data)
@@ -45,9 +51,10 @@ const SignIn = async () => {
         },
         onError: (error) => {
           Alert.alert('Error', error.message)
-        }
-      })
-    }
+        },
+      }
+    )
+  }
 
   return (
     <>
@@ -92,6 +99,7 @@ const SignIn = async () => {
             >
               <View className={isTablet ? "pt-10" : "pt-8"}>
 
+                {/* Email input */}
                 <View className={isTablet ? "mb-6" : "mb-4"}>
                   <TextInput
                     className={`bg-gray-50 border border-gray-200 rounded-xl px-4 ${isTablet ? 'py-5 text-lg' : 'py-4 text-base'}`}
@@ -105,6 +113,7 @@ const SignIn = async () => {
                   />
                 </View>
 
+                {/* Password input */}
                 <View className={isTablet ? "mb-6" : "mb-4"}>
                   <View className="relative">
                     <TextInput
@@ -129,6 +138,7 @@ const SignIn = async () => {
                   </View>
                 </View>
 
+                {/* Remember me + forgot password */}
                 <View className={`flex-row justify-between items-center ${isTablet ? 'mb-10' : 'mb-8'}`}>
                   <TouchableOpacity 
                     className="flex-row items-center"
@@ -156,6 +166,7 @@ const SignIn = async () => {
                   </TouchableOpacity>
                 </View>
 
+                {/* Login button */}
                 <TouchableOpacity 
                   className={`rounded-xl px-6 mb-6 ${isTablet ? 'py-5' : 'py-4'}`}
                   style={{ backgroundColor: '#4285F4' }}
@@ -166,6 +177,7 @@ const SignIn = async () => {
                   </Text>
                 </TouchableOpacity>
 
+                {/* Sign Up link */}
                 <View className={`flex-row justify-center ${isTablet ? 'mb-12' : 'mb-8'}`}>
                   <Text className={`text-gray-600 ${isTablet ? 'text-base' : 'text-sm'}`}>
                     Don&apos;t have an account?{' '}
