@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import authClient from './lib/auth-client'; // Add this import
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -16,13 +17,7 @@ const SignIn = () => {
     router.push('/SignUp')
   }
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
   const handleSignIn = async () => {
-    // Basic validation - just check if fields are not empty
     if (!email.trim()) {
       Alert.alert('Error', 'Please enter your email')
       return
@@ -33,12 +28,19 @@ const SignIn = () => {
       return
     }
 
-    console.log('Sign in with:', { email, password })
-    
-    // Navigate to Home tab specifically
-    console.log('Navigating to Home tab...')
-    router.replace('/(root)/(tabs)/Home')
-  }
+    await authClient.signIn.email({
+        email,
+        password,
+      }, {
+        onSuccess: (data) => {
+          console.log('Sign-in successful:', data)
+          router.replace('/Home')
+        },
+        onError: (error) => {
+          Alert.alert('Error', error.message)
+        }
+      })
+    }
 
   return (
     <>
