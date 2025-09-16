@@ -7,16 +7,16 @@ import axios from "axios";
 
 export default function Dashboard() {
   const [kpis, setKpis] = useState([
-  { title: 'New Reports', value: '128', icon: <FiFilePlus className="h-5 w-5" /> },
-    { title: 'In Progress', value: '76', icon: <FiClock className="h-5 w-5" /> },
-    { title: 'Resolved', value: '42', icon: <FiCheckCircle className="h-5 w-5" /> }
+  { title: 'New Reports', value: '-', icon: <FiFilePlus className="h-5 w-5" /> },
+    { title: 'In Progress', value: '-', icon: <FiClock className="h-5 w-5" /> },
+    { title: 'Resolved', value: '-', icon: <FiCheckCircle className="h-5 w-5" /> }
   ]);
 
   useEffect(() => {
     // Fetch KPI data from backend API and update state
     const fetchData = async () => {
       try {
-        const {data} = await axios.get(`${import.meta.env.VITE_API_BASE}/api/issues/stats`);
+        const {data} = await axios.get(`${import.meta.env.VITE_API_BASE}/api/issues/i/stats`);
         const updatedKpis = [
           { title: 'New Reports', value: data.newIssues, icon: <FiFilePlus className="h-5 w-5" /> },
           { title: 'In Progress', value: data.inProgressIssues, icon: <FiClock className="h-5 w-5" /> },  
