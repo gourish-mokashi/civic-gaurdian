@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import { FiBell, FiChevronDown } from 'react-icons/fi'
+import { useState } from 'react';
+import { FiBell, FiChevronDown } from 'react-icons/fi';
+import logo from '../assets/logo.png';
+import { signOut } from '../lib/auth-client';
 
 export default function Header({ title = 'Dashboard' }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -33,10 +35,10 @@ export default function Header({ title = 'Dashboard' }) {
             aria-haspopup="menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
-            className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-gray-100"
+            className="flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-gray-100 cursor-pointer"
           >
-            <span className="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-700 bg-gray-200 rounded-full">
-              JP
+            <span className="inline-flex items-center justify-center w-8 h-8 text-sm font-medium text-gray-700 rounded-full">
+              <img src={logo} alt="logo" />
             </span>
             <FiChevronDown className="w-4 h-4 text-gray-500" />
           </button>
@@ -46,10 +48,16 @@ export default function Header({ title = 'Dashboard' }) {
               role="menu"
               className="absolute right-0 mt-2 overflow-hidden bg-white border border-gray-200 rounded-md shadow-lg w-44"
             >
-              <a href="#" role="menuitem" className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
-              <a href="#" role="menuitem" className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Settings</a>
-              <div className="h-px my-1 bg-gray-200" />
-              <button role="menuitem" className="block w-full px-3 py-2 text-sm text-left text-red-600 hover:bg-red-50">Sign out</button>
+              <button
+                role="menuitem"
+                className="block w-full px-3 py-2 text-sm text-left text-red-600 cursor-pointer hover:bg-red-50"
+                onClick={async () => {
+                  await signOut();
+                  window.location.href = '/signin';
+                }}
+              >
+                Sign out
+              </button>
             </div>
           )}
         </div>

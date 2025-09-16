@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { FiHome, FiAlertTriangle, FiBell, FiBarChart2 } from 'react-icons/fi'
+import logo from '../assets/logo.png'
 
 const navItems = [
   { label: 'Dashboard', to: '/', icon: <FiHome className="w-5 h-5" aria-hidden="true" /> },
@@ -19,11 +20,10 @@ export default function Sidebar() {
     <div className="flex flex-col h-full text-white bg-blue-500">
       {/* Brand */}
       <div className="flex items-center gap-3 px-4 py-4 border-b border-white/20">
-        <div className="flex items-center justify-center w-8 h-8 text-xs font-medium bg-blue-600 rounded">
-          {/* Logo placeholder */}
-          JP
+        <div className="flex items-center justify-center w-8 h-8 text-xs font-medium">
+          <img src={logo} alt="logo" />
         </div>
-        <span className="text-lg font-semibold tracking-tight">Johar Prahari</span>
+        <span className="text-lg font-semibold tracking-tight">Civic Guardian</span>
       </div>
 
       {/* Navigation */}
