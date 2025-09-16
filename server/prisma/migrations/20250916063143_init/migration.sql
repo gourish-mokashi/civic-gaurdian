@@ -1,9 +1,17 @@
 -- CreateEnum
 CREATE TYPE "public"."status" AS ENUM ('NEW', 'IN_PROGRESS', 'RESOLVED', 'REJECTED', 'ON_HOLD');
 
+-- CreateEnum
+CREATE TYPE "public"."role" AS ENUM ('USER', 'ADMIN');
+
+-- CreateEnum
+CREATE TYPE "public"."department" AS ENUM ('POLICE', 'MUNICIPAL', 'ELECTRICITY', 'OTHERS');
+
+-- CreateEnum
+CREATE TYPE "public"."category" AS ENUM ('POTHOLE', 'GARBAGE_OVERFLOW', 'STREETLIGHT_OUTAGE', 'POWER_OUTAGE', 'TRAFIC_SIGNAL_MALFUNCTION', 'STRAY_ANIMALS', 'TREE_FALLEN', 'SEWER_BLOCKAGE', 'WATER_LEAKAGE', 'NOISE_COMPLAINT', 'THEFT', 'ASSAULT', 'OTHERS');
+
 -- CreateTable
 CREATE TABLE "public"."user" (
-    "fullName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "phoneNumber" TEXT,
     "id" TEXT NOT NULL,
@@ -12,6 +20,7 @@ CREATE TABLE "public"."user" (
     "pincode" TEXT,
     "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "image" TEXT,
+    "role" "public"."role" NOT NULL DEFAULT 'USER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -68,8 +77,10 @@ CREATE TABLE "public"."issue" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT,
+    "category" "public"."category" NOT NULL,
     "status" "public"."status" NOT NULL DEFAULT 'NEW',
     "priority" INTEGER DEFAULT 0,
+    "assignedTo" "public"."department" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "audio_url" TEXT,
     "image_url" TEXT,

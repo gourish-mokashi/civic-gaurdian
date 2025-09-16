@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../generated/prisma/index.js";
+import rpaAutomation from "../lib/rpa_automation.js";
 
 const prisma = new PrismaClient();
 
@@ -30,13 +31,17 @@ export async function getIssueById(req, res) {
 export async function createIssue(req, res) {
     const { title, description, category, status, priority, lat, lon } = req.body;
 
+    // RPA Automation to assign department based on category
+    const assignedTo = rpaAutomation(category);
+    
     try {
         const newIssue = await prisma.issue.create({
-            data: {
+            data: { 
                 title,
                 description,
                 category,
                 status,
+                assignedTo,
                 priority,
                 lat,
                 lon

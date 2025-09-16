@@ -6,6 +6,6 @@ issueRouter.get('/', getAllIssues);
 issueRouter.get('/:id', getIssueById);
 issueRouter.post('/', createIssue);
 issueRouter.put('/:id', updateIssue);
-issueRouter.get('/stats', issueStats);
+issueRouter.get('/i/stats', issueStats);
 
 export default issueRouter;
