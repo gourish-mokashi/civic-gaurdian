@@ -1,14 +1,35 @@
 import Card from "../components/Card"
 import { FiFilePlus, FiClock, FiCheckCircle, FiAlertCircle } from "react-icons/fi"
 import InteractiveMap from '../components/InteractiveMap';
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Dashboard() {
-  const kpis = [
-    { title: 'New Reports', value: '128', icon: <FiFilePlus className="h-5 w-5" /> },
+  const [kpis, setKpis] = useState([
+  { title: 'New Reports', value: '128', icon: <FiFilePlus className="h-5 w-5" /> },
     { title: 'In Progress', value: '76', icon: <FiClock className="h-5 w-5" /> },
-    { title: 'Resolved Today', value: '42', icon: <FiCheckCircle className="h-5 w-5" /> },
-    { title: 'Overdue Issues', value: '9', icon: <FiAlertCircle className="h-5 w-5" /> },
-  ]
+    { title: 'Resolved', value: '42', icon: <FiCheckCircle className="h-5 w-5" /> }
+  ]);
+
+  useEffect(() => {
+    // Fetch KPI data from backend API and update state
+    const fetchData = async () => {
+      try {
+        const {data} = await axios.get(`${import.meta.env.VITE_API_BASE}/api/issues/stats`);
+        const updatedKpis = [
+          { title: 'New Reports', value: data.newIssues, icon: <FiFilePlus className="h-5 w-5" /> },
+          { title: 'In Progress', value: data.inProgressIssues, icon: <FiClock className="h-5 w-5" /> },  
+          { title: 'Resolved', value: data.resolvedIssues, icon: <FiCheckCircle className="h-5 w-5" /> },
+        ]
+        setKpis(updatedKpis)
+      } catch (error) {
+        console.error("Error fetching KPI data:", error)
+      }
+    };
+    
+    fetchData();
+  }, [])
 
   const alerts = [
     { id: 1, title: 'Garbage overflow near Market Road', time: '5m ago', severity: 'High' },
@@ -32,7 +53,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       <h2 className="text-xl font-semibold">Dashboard</h2>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {kpis.map((k) => (
           <Card key={k.title} title={k.title} value={k.value} icon={k.icon} />
         ))}
