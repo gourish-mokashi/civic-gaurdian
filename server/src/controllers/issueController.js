@@ -65,3 +65,35 @@ export async function updateIssue(req, res) {
         res.status(500).json({ error: "Failed to update issue" });
     }
 }
+
+export async function issueStats(req, res) {
+    try {
+        const newIssues = await prisma.issue.count({
+            where: {
+                status: 'NEW'
+            }
+        });
+
+        const inProgressIssues = await prisma.issue.count({
+            where: {
+                status: 'IN_PROGRESS'
+            }
+        });
+
+        const resolvedIssues = await prisma.issue.count({
+            where: {
+                status: 'RESOLVED'
+            }
+        });
+
+        res.status(200).json({
+            newIssues,
+            inProgressIssues,
+            resolvedIssues
+        });
+
+    }
+    catch (error) {
+        res.status(500).json({ error: "Failed to fetch issue stats" });
+    }
+}
