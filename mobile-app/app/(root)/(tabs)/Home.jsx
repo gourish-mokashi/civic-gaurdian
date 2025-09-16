@@ -2,100 +2,34 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import authClient from '../../../lib/auth-client';
 
 
-// Mock complaints data (replace with API fetch in production)
-// To use real API data, uncomment the import above and replace complaints with:
-// const { issues: complaints, loading, error, refetch } = useIssues();
-const complaints = [
-  {
-    id: 'C-101',
-    category: 'Pothole',
-    location: 'Ward 5',
-    status: 'New',
-    reportedDate: '2025-09-10',
-    reporter: { name: 'Amit Sharma', credibilityScore: 82 },
-    description: 'Large pothole near the main road causing traffic.',
-    mediaType: 'image',
-    media: require('../../../assets/images/react-logo.png'),
-  },
-  {
-    id: 'C-004',
-    category: 'Pothole',
-    location: 'Ward 5',
-    status: 'New',
-    reportedDate: '2025-09-10',
-    reporter: { name: 'Amit Sharma', credibilityScore: 82 },
-    description: 'Large pothole near the main road causing traffic.',
-    mediaType: 'image',
-    media: require('../../../assets/images/react-logo.png'),
-  },
-  {
-    id: 'C-005',
-    category: 'Pothole',
-    location: 'Ward 5',
-    status: 'New',
-    reportedDate: '2025-09-10',
-    reporter: { name: 'Amit Sharma', credibilityScore: 82 },
-    description: 'Large pothole near the main road causing traffic.',
-    mediaType: 'image',
-    media: require('../../../assets/images/react-logo.png'),
-  },
-  {
-    id: 'C-001',
-    category: 'Pothole',
-    location: 'Ward 5',
-    status: 'New',
-    reportedDate: '2025-09-10',
-    reporter: { name: 'Amit Sharma', credibilityScore: 82 },
-    description: 'Large pothole near the main road causing traffic.',
-    mediaType: 'image',
-    media: require('../../../assets/images/react-logo.png'),
-  },
-  {
-    id: 'C-002',
-    category: 'Garbage Overflow',
-    location: 'Ward 2',
-    status: 'In Progress',
-    reportedDate: '2025-09-09',
-    reporter: { name: 'Priya Verma', credibilityScore: 91 },
-    description: 'Garbage bins overflowing, needs urgent cleaning.',
-    mediaType: 'image',
-    media: require('../../../assets/images/react-logo.png'),
-  },
-];
+
 
 const ComplaintCard = ({ complaint }) => {
   return (
     <View className="bg-white rounded-xl shadow-md mb-5">
-      {/* Media */}
-      {complaint.mediaType === 'image' ? (
+      {/* Image */}
+      {complaint.image_url ? (
         <Image
-          source={complaint.media}
+          source={{ uri: complaint.image_url }}
           className="w-full h-48 rounded-t-xl"
-          resizeMode="cover"
         />
       ) : null}
-      {/* For future: add video support here */}
-
       {/* Content */}
       <View className="p-4">
         <Text className="text-xl font-semibold text-gray-800 mb-1">
           {complaint.category}
         </Text>
         <Text className="text-sm text-gray-500 mb-2">
-          {complaint.location} • {complaint.status} • {complaint.reportedDate}
+          {complaint.lat} : {complaint.long} • {complaint.status} • {complaint.reportedDate}
         </Text>
         <Text className="text-base text-gray-700 mb-3">
           {complaint.description}
-        </Text>
-
-        {/* Reporter Info */}
-        <Text className="text-xs text-gray-500">
-          Reported by <Text className="font-medium">{complaint.reporter.name}</Text>  
-          {' '} (Credibility: {complaint.reporter.credibilityScore})
         </Text>
       </View>
     </View>
@@ -104,7 +38,21 @@ const ComplaintCard = ({ complaint }) => {
 
 const Home = () => {
   const insets = useSafeAreaInsets();
-  
+  const [complaints, setComplaints] = useState([]);
+
+useEffect(() => {
+    const fetchComplaints = async () => {
+      try {
+        const { data } = await authClient.$fetch(`http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000/api/issues/`);
+        setComplaints(data);
+      } catch (error) {
+        console.error('Error fetching complaints:', error);
+        Alert.alert('Error', 'Failed to fetch complaints. Please try again later.');
+      }
+    };
+    fetchComplaints();
+  }, []);
+
   return (
     <View className="flex-1 bg-gray-100" style={{ paddingTop: insets.top }}>
       <StatusBar style="dark" />
