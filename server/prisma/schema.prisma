@@ -23,11 +23,25 @@ enum role {
 }
 
 enum department {
-  MEDICAL
   POLICE
-  FIRE_BRIGADE
   MUNICIPAL
   ELECTRICITY
+  OTHERS
+}
+
+enum category {
+  POTHOLE
+  GARBAGE_OVERFLOW
+  STREETLIGHT_OUTAGE
+  POWER_OUTAGE
+  TRAFIC_SIGNAL_MALFUNCTION
+  STRAY_ANIMALS
+  TREE_FALLEN
+  SEWER_BLOCKAGE
+  WATER_LEAKAGE
+  NOISE_COMPLAINT
+  THEFT
+  ASSAULT
   OTHERS
 }
 
@@ -99,10 +113,10 @@ model issue {
   id          String   @id @default(uuid())
   title       String
   description String?
-  category    String?
+  category    category
   status      status   @default(NEW)
   priority    Int?     @default(0)
-  assignedTo  department?
+  assignedTo  department
   createdAt   DateTime @default(now())
   audio_url   String?
   image_url   String?
