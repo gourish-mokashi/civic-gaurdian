@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { mockIssues } from '../data/mockIssues'
+import { useEffect, useState } from 'react'
 import Badge from '../components/Badge'
 import IssueDetailModal from '../components/IssueDetailModal'
+import axiosInstance from '../lib/axios'
 
 export default function IssueManagement() {
-  const [issues, setIssues] = useState(mockIssues)
+  const [issues, setIssues] = useState([])
   const [filters, setFilters] = useState({ status: 'All', category: 'All' })
   const [selectedIssue, setSelectedIssue] = useState(null)
 
@@ -17,6 +17,19 @@ export default function IssueManagement() {
     return statusMatch && categoryMatch
   })
 
+
+  useEffect(() => {
+    async function fetchIssues() {
+      try {
+      const { data } = await axiosInstance.get('/api/issues')
+      console.log(data)
+      setIssues(data)
+    } catch (error) {
+      console.error("Error fetching issues:", error)
+    }
+    }
+    fetchIssues();
+  }, [])
   // badge styling moved to reusable Badge component
 
   // Save changes to issue (status/department)
@@ -90,8 +103,8 @@ export default function IssueManagement() {
                   <tr key={i.id} className="hover:bg-gray-50">
                     <td className="px-4 py-3 text-sm font-medium text-gray-900">{i.id}</td>
                     <td className="px-4 py-3 text-sm text-gray-700">{i.category}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{i.location}</td>
-                    <td className="px-4 py-3 text-sm text-gray-700">{i.reportedDate}</td>
+                    <td className="px-4 py-3 text-sm text-gray-700">{i.lat} : {i.long}</td>
+                    <td className="px-4 py-3 text-sm text-gray-700">{i.createdAt}</td>
                     <td className="px-4 py-3 text-sm">{i.priority ? <Badge status={i.priority} kind="priority" /> : '-'}</td>
                     <td className="px-4 py-3 text-sm"><Badge status={i.status} /></td>
                     <td className="px-4 py-3 text-sm text-right">

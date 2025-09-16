@@ -27,10 +27,16 @@ const issueIcon = L.icon({
 	shadowSize: [41, 41],
 })
 
+
 const DEFAULT_MARKERS = [
-	{ id: 'A', position: [13.1167, 77.6347], title: 'Overflowing garbage bin' }
-	//{ id: 'B', position: [16.255, 74.44], title: 'Pothole reported' },
-	//{ id: 'C', position: [16.268, 74.458], title: 'Streetlight outage' },
+	{ id: 'A', position: [13.1167, 77.6347], title: 'Overflowing garbage bin' },
+	{ id: 'B', position: [13.1190, 77.6000], title: 'Pothole reported' },
+	{ id: 'C', position: [13.1150, 77.6400], title: 'Street light not working' },
+	{ id: 'D', position: [13.1100, 77.6300], title: 'Water leakage' },
+	{ id: 'E', position: [13.1200, 77.6200], title: 'Illegal dumping' },
+	{ id: 'F', position: [13.1180, 77.6100], title: 'Noise complaint' },
+	{ id: 'G', position: [13.1130, 77.6250], title: 'Traffic signal malfunction' },
+	{ id: 'H', position: [13.1175, 77.6150], title: 'Graffiti on public property' },		
 ]
 
 export default function InteractiveMap({ center = DEFAULT_CENTER, markers = DEFAULT_MARKERS, className = 'h-80 w-full' }) {

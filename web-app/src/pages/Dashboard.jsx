@@ -3,7 +3,7 @@ import { FiFilePlus, FiClock, FiCheckCircle, FiAlertCircle } from "react-icons/f
 import InteractiveMap from '../components/InteractiveMap';
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 export default function Dashboard() {
   const [kpis, setKpis] = useState([
@@ -16,7 +16,7 @@ export default function Dashboard() {
     // Fetch KPI data from backend API and update state
     const fetchData = async () => {
       try {
-        const {data} = await axios.get(`${import.meta.env.VITE_API_BASE}/api/issues/i/stats`);
+        const {data} = await axiosInstance.get('/api/issues/i/stats');
         const updatedKpis = [
           { title: 'New Reports', value: data.newIssues, icon: <FiFilePlus className="h-5 w-5" /> },
           { title: 'In Progress', value: data.inProgressIssues, icon: <FiClock className="h-5 w-5" /> },  
