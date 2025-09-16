@@ -75,6 +75,7 @@ export default function IssueManagement() {
                 <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Category</th>
                 <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Location</th>
                 <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Date</th>
+                <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Priority</th>
                 <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">Status</th>
                 <th scope="col" className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">Actions</th>
               </tr>
@@ -91,6 +92,7 @@ export default function IssueManagement() {
                     <td className="px-4 py-3 text-sm text-gray-700">{i.category}</td>
                     <td className="px-4 py-3 text-sm text-gray-700">{i.location}</td>
                     <td className="px-4 py-3 text-sm text-gray-700">{i.reportedDate}</td>
+                    <td className="px-4 py-3 text-sm">{i.priority ? <Badge status={i.priority} kind="priority" /> : '-'}</td>
                     <td className="px-4 py-3 text-sm"><Badge status={i.status} /></td>
                     <td className="px-4 py-3 text-sm text-right">
                       <button
