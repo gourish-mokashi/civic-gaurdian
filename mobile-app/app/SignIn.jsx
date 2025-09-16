@@ -2,7 +2,8 @@ import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import authClient from './lib/auth-client'; // Add this import
+import authClient from '../lib/auth-client'; // Add this import
+import { getAuthData, saveAuthData } from '../lib/saved-token';
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -32,9 +33,11 @@ const SignIn = () => {
         email,
         password,
       }, {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           console.log('Sign-in successful:', data)
+          await saveAuthData(data)
           router.replace('/Home')
+          console.log(await getAuthData())
         },
         onError: (error) => {
           Alert.alert('Error', error.message)
