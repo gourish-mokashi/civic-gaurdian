@@ -30,20 +30,20 @@ export default function SignIn() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="flex min-h-screen">
       {/* Left side - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gray-50 items-center justify-center border-r border-gray-200">
-        <h1 className="text-4xl font-bold text-gray-900 max-w-sm leading-tight">
+      <div className="items-center justify-center hidden border-r border-gray-200 lg:flex lg:w-1/2 bg-gray-50">
+        <h1 className="max-w-sm text-4xl font-bold leading-tight text-gray-900">
           Civic-Guardian <span className="text-Blue-500">Admin Portal</span>
         </h1>
       </div>
 
       {/* Right side - Sign In form */}
-      <div className="flex flex-1 items-center justify-center p-6 bg-white">
+      <div className="flex items-center justify-center flex-1 p-6 bg-white">
         <div className="w-full max-w-md space-y-6">
           {/* Logo holder */}
-          <div className="w-full flex justify-center">
-            <div className="h-16 w-16 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center shadow-sm">
+          <div className="flex justify-center w-full">
+            <div className="flex items-center justify-center w-16 h-16 bg-gray-100 border border-gray-200 shadow-sm rounded-xl">
               <img src={logo} alt="Logo"/>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
             </div>
 
@@ -87,14 +87,14 @@ export default function SignIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
               />
             </div>
 
             {/* Submit */}
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-500 px-4 py-2 text-white font-medium shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 font-medium text-white bg-blue-500 rounded-lg shadow-sm cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               Sign In
             </button>
