@@ -3,13 +3,21 @@ import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { clearAuthData } from '../../../lib/saved-token';
 
 const Profile = () => {
   const insets = useSafeAreaInsets();
   
-  const handleLogout = () => {
+  const handleLogout = async () => {
     console.log('Logging out...')
     router.replace('/SignIn')
+    try {
+      await clearAuthData();
+      console.log('Auth data cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing auth data:', error);
+      
+    }
   }
 
   return (

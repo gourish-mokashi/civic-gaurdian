@@ -13,4 +13,28 @@ const authClient = createAuthClient({
     ]
 });
 
+
+export const fetchWithAuth = async (url, options = {}) => {
+  const stored = await SecureStore.getItemAsync("authToken");
+  console.log(stored);
+  if (!stored) throw new Error("Not logged in");
+
+  const token = stored;
+
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`, // attach token
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Request failed with " + res.status);
+  }
+
+  return res.json();
+};
+
 export default authClient;
