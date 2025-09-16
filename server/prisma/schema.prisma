@@ -22,6 +22,15 @@ enum role {
   ADMIN
 }
 
+enum department {
+  MEDICAL
+  POLICE
+  FIRE_BRIGADE
+  MUNICIPAL
+  ELECTRICITY
+  OTHERS
+}
+
 model User {
   email         String    @unique
   phoneNumber   String?   @unique
@@ -90,8 +99,10 @@ model issue {
   id          String   @id @default(uuid())
   title       String
   description String?
+  category    String?
   status      status   @default(NEW)
   priority    Int?     @default(0)
+  assignedTo  department?
   createdAt   DateTime @default(now())
   audio_url   String?
   image_url   String?

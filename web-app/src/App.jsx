@@ -1,4 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'leaflet/dist/leaflet.css'
 import MainLayout from './layouts/MainLayout'
 import Dashboard from './pages/Dashboard'
@@ -9,7 +12,9 @@ import SignIn from './pages/SignIn'
 
 function App() {
   return (
-    <Routes>
+    <>
+      <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
+      <Routes>
       <Route
         path="/"
         element={
@@ -51,6 +56,7 @@ function App() {
       {/* Fallback to home */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }
 

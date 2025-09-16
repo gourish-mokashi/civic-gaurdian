@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import authRouter from './routes/authRoute.js';
+import issueRouter from './routes/issueRoute.js';
 import cors from 'cors';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth.js';
@@ -19,6 +20,8 @@ app.use(cors({
 app.all("/api/auth/{*any}", toNodeHandler(auth))
 
 app.use(express.json());
+
+app.use("/api/issues", issueRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
