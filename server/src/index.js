@@ -5,6 +5,7 @@ import issueRouter from './routes/issueRoute.js';
 import cors from 'cors';
 import { toNodeHandler } from 'better-auth/node';
 import { auth } from './lib/auth.js';
+import { betterAuthMiddleware } from './middleware/betterAuthMiddleware.js';
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(cors({
 app.all("/api/auth/{*any}", toNodeHandler(auth))
 
 app.use(express.json());
+
+app.use(betterAuthMiddleware);
 
 app.use("/api/issues", issueRouter);
 

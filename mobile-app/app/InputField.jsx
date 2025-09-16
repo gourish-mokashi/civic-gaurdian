@@ -14,17 +14,21 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
-// Demo categories - you can customize these as per your requirements
+// Civic Guardian categories - matching backend requirements
 const categories = [
-  { id: 'pothole', name: 'Pothole', icon: 'construct-outline', color: '#EF4444' },
-  { id: 'garbage', name: 'Garbage/Waste', icon: 'trash-outline', color: '#F59E0B' },
-  { id: 'streetlight', name: 'Street Light', icon: 'bulb-outline', color: '#EAB308' },
-  { id: 'water', name: 'Water Issue', icon: 'water-outline', color: '#3B82F6' },
-  { id: 'drainage', name: 'Drainage', icon: 'rainy-outline', color: '#0EA5E9' },
-  { id: 'road', name: 'Road Damage', icon: 'car-outline', color: '#8B5CF6' },
-  { id: 'noise', name: 'Noise Pollution', icon: 'volume-high-outline', color: '#EC4899' },
-  { id: 'other', name: 'Other', icon: 'ellipsis-horizontal-outline', color: '#6B7280' },
+  { id: 'POTHOLE', name: 'Pothole', icon: 'construct-outline', color: '#EF4444' },
+  { id: 'GARBAGE_OVERFLOW', name: 'Garbage Overflow', icon: 'trash-outline', color: '#F59E0B' },
+  { id: 'STREETLIGHT_OUTAGE', name: 'Streetlight Outage', icon: 'bulb-outline', color: '#EAB308' },
+  { id: 'POWER_OUTAGE', name: 'Power Outage', icon: 'flash-off-outline', color: '#DC2626' },
+  { id: 'TRAFIC_SIGNAL_MALFUNCTION', name: 'Traffic Signal Issue', icon: 'traffic-cone-outline', color: '#F97316' },
+  { id: 'STRAY_ANIMALS', name: 'Stray Animals', icon: 'paw-outline', color: '#7C2D12' },
+  { id: 'TREE_FALLEN', name: 'Tree Fallen', icon: 'leaf-outline', color: '#16A34A' },
+  { id: 'SEWER_BLOCKAGE', name: 'Sewer Blockage', icon: 'water-outline', color: '#0369A1' },
+  { id: 'WATER_LEAKAGE', name: 'Water Leakage', icon: 'rainy-outline', color: '#0EA5E9' },
+  { id: 'NOISE_COMPLAINT', name: 'Noise Complaint', icon: 'volume-high-outline', color: '#EC4899' },
+  { id: 'THEFT', name: 'Theft', icon: 'shield-outline', color: '#7C3AED' },
+  { id: 'ASSAULT', name: 'Assault', icon: 'alert-circle-outline', color: '#BE123C' },
+  { id: 'OTHERS', name: 'Others', icon: 'ellipsis-horizontal-outline', color: '#6B7280' },
 ];
 
 const InputField = () => {
@@ -35,17 +39,14 @@ const InputField = () => {
   const insets = useSafeAreaInsets();
 
   const handleSubmit = async () => {
-    // Validation
     if (!selectedCategory) {
       Alert.alert('Error', 'Please select a category for your report');
       return;
     }
-
     if (!title.trim()) {
       Alert.alert('Error', 'Please enter a title for your report');
       return;
     }
-
     if (!description.trim()) {
       Alert.alert('Error', 'Please provide a description');
       return;
@@ -53,48 +54,55 @@ const InputField = () => {
 
     setIsSubmitting(true);
 
-    try {
-      // Prepare issue data for backend
-      const issueData = {
-        title: title.trim(),
-        description: description.trim(),
-        category: selectedCategory.id,
-        priority: 0, // Default priority
-        // lat and long will be added when location feature is implemented
-        // lat: "0", 
-        // long: "0"
-      };
+    const issueData = {
+      title: title.trim(),
+      description: description.trim(),
+      category: selectedCategory.id,
+      priority: Math.floor(Math.random() * 5) + 4, // Random priority from 4 to 10 `
+      lat: '12.9716', // Placeholder latitude (bangalore)
+      long: '77.2090', // Placeholder longitude (bangalore)
 
+    };
+
+    try {
       console.log('Submitting report:', issueData);
-      
-      // Submit to backend API
-      const result = await api.issues.create(issueData);
-      
-      console.log('Report submitted successfully:', result);
-      
-      Alert.alert(
-        'Success', 
-        'Your report has been submitted successfully!',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              // Reset form
-              setTitle('');
-              setDescription('');
-              setSelectedCategory(null);
-              // Navigate back to home
-              router.back();
-            }
-          }
-        ]
+
+      const response = await fetch(
+        `http://${process.env.EXPO_PUBLIC_IP_ADDRESS}:3000/api/issues`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(issueData),
+        }
       );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          `HTTP ${response.status}: ${
+            errorData.message || 'Failed to create issue'
+          }`
+        );
+      }
+
+      const result = await response.json();
+      console.log('Report submitted successfully:', result);
+
+      Alert.alert('Success', 'Your report has been submitted successfully!', [
+        {
+          text: 'OK',
+          onPress: () => {
+            setTitle('');
+            setDescription('');
+            setSelectedCategory(null);
+            router.back();
+          },
+        },
+      ]);
     } catch (error) {
       console.error('Error submitting report:', error);
-      
-      // More specific error handling
+
       let errorMessage = 'Failed to submit report. Please try again.';
-      
       if (error.message.includes('401')) {
         errorMessage = 'Authentication required. Please sign in again.';
       } else if (error.message.includes('400')) {
@@ -104,7 +112,7 @@ const InputField = () => {
       } else if (error.message.includes('Network')) {
         errorMessage = 'Network error. Please check your connection.';
       }
-      
+
       Alert.alert('Error', errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -113,18 +121,10 @@ const InputField = () => {
 
   const handleCancel = () => {
     if (title.trim() || description.trim() || selectedCategory) {
-      Alert.alert(
-        'Discard Report?',
-        'You have unsaved changes. Are you sure you want to discard this report?',
-        [
-          { text: 'Keep Editing', style: 'cancel' },
-          { 
-            text: 'Discard', 
-            style: 'destructive',
-            onPress: () => router.back()
-          }
-        ]
-      );
+      Alert.alert('Discard Report?', 'You have unsaved changes. Discard?', [
+        { text: 'Keep Editing', style: 'cancel' },
+        { text: 'Discard', style: 'destructive', onPress: () => router.back() },
+      ]);
     } else {
       router.back();
     }
@@ -132,27 +132,28 @@ const InputField = () => {
 
   const renderCategoryItem = ({ category }) => {
     const isSelected = selectedCategory?.id === category.id;
-    
     return (
       <TouchableOpacity
         key={category.id}
         onPress={() => setSelectedCategory(category)}
         className={`flex-row items-center p-3 m-1 rounded-xl border-2 ${
-          isSelected 
-            ? 'border-orange-500 bg-orange-50' 
+          isSelected
+            ? 'border-orange-500 bg-orange-50'
             : 'border-gray-200 bg-white'
         }`}
         style={{ minWidth: '45%' }}
       >
-        <View 
+        <View
           className="w-8 h-8 rounded-full items-center justify-center mr-3"
           style={{ backgroundColor: category.color + '20' }}
         >
           <Ionicons name={category.icon} size={16} color={category.color} />
         </View>
-        <Text className={`font-medium ${
-          isSelected ? 'text-orange-700' : 'text-gray-700'
-        }`}>
+        <Text
+          className={`font-medium ${
+            isSelected ? 'text-orange-700' : 'text-gray-700'
+          }`}
+        >
           {category.name}
         </Text>
       </TouchableOpacity>
@@ -160,44 +161,51 @@ const InputField = () => {
   };
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       className="flex-1"
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <StatusBar style="dark" />
-      <View 
-        className="flex-1 bg-gray-50"
-        style={{ paddingTop: insets.top }}
-      >
+      <View className="flex-1 bg-gray-50" style={{ paddingTop: insets.top }}>
         {/* Header */}
         <View className="bg-white border-b border-gray-200 px-4 py-3">
           <View className="flex-row items-center justify-between">
-            <TouchableOpacity 
-              onPress={handleCancel}
-              className="flex-row items-center"
-            >
+            <TouchableOpacity onPress={handleCancel} className="flex-row items-center">
               <Ionicons name="close" size={24} color="#666" />
               <Text className="ml-2 text-base text-gray-600">Cancel</Text>
             </TouchableOpacity>
-            
+
             <Text className="text-lg font-semibold text-gray-800">
               Create Report
             </Text>
-            
-            <TouchableOpacity 
+
+            <TouchableOpacity
               onPress={handleSubmit}
-              disabled={isSubmitting || !selectedCategory || !title.trim() || !description.trim()}
+              disabled={
+                isSubmitting ||
+                !selectedCategory ||
+                !title.trim() ||
+                !description.trim()
+              }
               className={`px-4 py-2 rounded-full ${
-                (!selectedCategory || !title.trim() || !description.trim() || isSubmitting)
-                  ? 'bg-gray-300' 
+                !selectedCategory ||
+                !title.trim() ||
+                !description.trim() ||
+                isSubmitting
+                  ? 'bg-gray-300'
                   : 'bg-orange-500'
               }`}
             >
-              <Text className={`font-medium ${
-                (!selectedCategory || !title.trim() || !description.trim() || isSubmitting)
-                  ? 'text-gray-500' 
-                  : 'text-white'
-              }`}>
+              <Text
+                className={`font-medium ${
+                  !selectedCategory ||
+                  !title.trim() ||
+                  !description.trim() ||
+                  isSubmitting
+                    ? 'text-gray-500'
+                    : 'text-white'
+                }`}
+              >
                 {isSubmitting ? 'Posting...' : 'Post'}
               </Text>
             </TouchableOpacity>
@@ -211,7 +219,9 @@ const InputField = () => {
               Select Category *
             </Text>
             <View className="flex-row flex-wrap justify-between">
-              {categories.map((category) => renderCategoryItem({ category }))}
+              {categories.map((category) =>
+                renderCategoryItem({ category })
+              )}
             </View>
             {selectedCategory && (
               <View className="mt-3 p-3 bg-green-50 border border-green-200 rounded-xl">
@@ -233,10 +243,7 @@ const InputField = () => {
               placeholder="What's the issue?"
               placeholderTextColor="#9CA3AF"
               className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-base text-gray-800"
-              style={{
-                fontSize: 16,
-                lineHeight: 20,
-              }}
+              style={{ fontSize: 16, lineHeight: 20 }}
               maxLength={100}
             />
             <Text className="text-xs text-gray-500 mt-1 text-right">
@@ -258,11 +265,7 @@ const InputField = () => {
               multiline
               numberOfLines={8}
               textAlignVertical="top"
-              style={{
-                fontSize: 16,
-                lineHeight: 22,
-                minHeight: 120,
-              }}
+              style={{ fontSize: 16, lineHeight: 22, minHeight: 120 }}
               maxLength={500}
             />
             <Text className="text-xs text-gray-500 mt-1 text-right">
@@ -270,7 +273,7 @@ const InputField = () => {
             </Text>
           </View>
 
-          {/* Future: Add media attachment section */}
+          {/* Media (Coming Soon) */}
           <View className="bg-white border border-gray-200 rounded-xl p-4 mb-6">
             <View className="flex-row items-center">
               <Ionicons name="camera-outline" size={20} color="#9CA3AF" />
@@ -283,7 +286,11 @@ const InputField = () => {
           {/* Submission Guidelines */}
           <View className="bg-blue-50 border border-blue-200 rounded-xl p-4">
             <View className="flex-row items-start">
-              <Ionicons name="information-circle-outline" size={20} color="#3B82F6" />
+              <Ionicons
+                name="information-circle-outline"
+                size={20}
+                color="#3B82F6"
+              />
               <View className="ml-2 flex-1">
                 <Text className="text-sm font-medium text-blue-800 mb-1">
                   Submission Guidelines

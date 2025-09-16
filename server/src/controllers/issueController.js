@@ -29,7 +29,7 @@ export async function getIssueById(req, res) {
 }
 
 export async function createIssue(req, res) {
-    const { title, description, category, status, priority, lat, lon } = req.body;
+    const { title, description, category, status, priority, lat, long } = req.body;
 
     // RPA Automation to assign department based on category
     const assignedTo = rpaAutomation(category);
@@ -37,14 +37,14 @@ export async function createIssue(req, res) {
     try {
         const newIssue = await prisma.issue.create({
             data: { 
+                userId: req.user.id, // Assuming req.user is populated by authentication middleware
                 title,
                 description,
                 category,
-                status,
                 assignedTo,
                 priority,
                 lat,
-                lon
+                long
             },
         });
         res.status(201).json(newIssue);
