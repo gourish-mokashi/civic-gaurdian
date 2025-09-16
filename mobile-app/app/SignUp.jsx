@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import authClient from './lib/auth-client'
+import authClient from '../lib/auth-client'
 
 const SignUp = () => {
   const [fullName, setFullName] = useState('')
