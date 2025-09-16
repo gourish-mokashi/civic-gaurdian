@@ -34,9 +34,9 @@ export default function IssueDetailModal({ issue, onClose, onSave }) {
 			<div
 				role="dialog"
 				aria-modal="true"
-				className="relative z-10 w-full max-w-2xl overflow-hidden bg-white border border-gray-200 rounded-lg shadow-xl"
+				className="relative z-10 w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-xl max-h-[85vh] overflow-y-auto"
 			>
-				<div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+				<div className="sticky top-0 z-20 flex items-center justify-between px-3 py-2 bg-white border-b border-gray-200">
 					<h3 className="text-base font-semibold text-gray-900">Case {issue.id}</h3>
 					<button
 						type="button"
@@ -48,7 +48,7 @@ export default function IssueDetailModal({ issue, onClose, onSave }) {
 					</button>
 				</div>
 
-				<div className="p-4 space-y-4">
+				<div className="p-3 space-y-4">
 					{/* Image */}
 					<div className="flex items-center justify-center w-full overflow-hidden bg-gray-100 rounded-md aspect-video">
 						{imgSrc ? (
@@ -79,6 +79,10 @@ export default function IssueDetailModal({ issue, onClose, onSave }) {
 						<div>
 							<div className="text-gray-500">Reported Date</div>
 							<div className="font-medium text-gray-900">{issue.reportedDate || '-'}</div>
+						</div>
+						<div>
+							<div className="text-gray-500">Priority</div>
+							<div className="font-medium text-gray-900">{issue.priority ? <Badge status={issue.priority} kind="priority" /> : '-'}</div>
 						</div>
 						{issue.status && (
 							<div>
